@@ -39,7 +39,7 @@ for i in range(0, len(values)):
     isQuestion = False
 """
 
-for i in range(0, 10):
+for i in range(10, 20):
     array = parseTextIntoSent(values[i])
     for f in array:
         print(f)
