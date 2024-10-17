@@ -1,3 +1,5 @@
+#nevermind it just upped accuracy but loss is still high, 85% acc 1.3 loss for first epoch, will let this run
+
 from __future__ import print_function
 from collections import Counter
 import os
