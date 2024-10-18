@@ -23,7 +23,7 @@ def counterWords(textCol):
 
 # Use can load a different model if desired
 model_name      = "models/cnn_question_classifier"
-load_model_flag = False
+load_model_flag = True
 arguments       = sys.argv[1:len(sys.argv)]
 if len(arguments) == 1:
     model_name = arguments[0]
@@ -38,7 +38,7 @@ embedding_dims = 75
 filters = 100
 kernel_size = 3
 hidden_dims = 350
-epochs = 20
+epochs = 10
 
 # Add parts-of-speech to data (if desired, but we'll ignore this flag in this version)
 pos_tags_flag = False  # Disabling for now as we load data from a CSV
@@ -186,14 +186,14 @@ if not load_model_flag:
     model = tensorflow.keras.models.Sequential()
 
     model.add(tensorflow.keras.layers.Embedding(numUniqueWords, embedding_dims, input_length=maxlen))
-    model.add(tensorflow.keras.layers.Dropout(0.2))
+    model.add(tensorflow.keras.layers.Dropout(0.5))
     
     model.add(tensorflow.keras.layers.Conv1D(filters, kernel_size, padding='valid', activation='relu'))
     model.add(tensorflow.keras.layers.GlobalMaxPooling1D())
     
    # model.add(tensorflow.keras.layers.LSTM(hidden_dims, return_sequences=False))  # Set return_sequences=True if stacking LSTMs
 
-    model.add(tensorflow.keras.layers.Dense(hidden_dims, kernel_regularizer=tensorflow.keras.regularizers.l2(0.01)))
+    model.add(tensorflow.keras.layers.Dense(hidden_dims, kernel_regularizer=tensorflow.keras.regularizers.l2(0.05)))
     model.add(tensorflow.keras.layers.Dropout(0.5))
     model.add(tensorflow.keras.layers.Activation('relu'))
     
