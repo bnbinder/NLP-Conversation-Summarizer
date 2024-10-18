@@ -73,3 +73,6 @@ Set-ExecutionPolicy -ExecutionPolicy Undefined
 
 # Sources and Help
 https://medium.com/@manuelescobar-dev/implementing-and-running-llama-3-with-hugging-faces-transformers-library-40e9754d8c80
+
+
+https://stackoverflow.com/questions/61931629/overfitting-in-lstm-even-after-using-regularizers

@@ -23,7 +23,7 @@ def counterWords(textCol):
 
 # Use can load a different model if desired
 model_name      = "models/cnn_question_classifier"
-load_model_flag = True
+load_model_flag = False
 arguments       = sys.argv[1:len(sys.argv)]
 if len(arguments) == 1:
     model_name = arguments[0]
@@ -32,12 +32,12 @@ print(model_name)
 print("Load Model?", (load_model_flag))
 
 # Model configuration
-maxlen = 500
-batch_size = 64
+maxlen = 300
+batch_size = 128
 embedding_dims = 75
 filters = 100
 kernel_size = 3
-hidden_dims = 350
+hidden_dims = 128
 epochs = 10
 
 # Add parts-of-speech to data (if desired, but we'll ignore this flag in this version)
@@ -186,15 +186,17 @@ if not load_model_flag:
     model = tensorflow.keras.models.Sequential()
 
     model.add(tensorflow.keras.layers.Embedding(numUniqueWords, embedding_dims, input_length=maxlen))
-    model.add(tensorflow.keras.layers.Dropout(0.5))
+    model.add(tensorflow.keras.layers.Dropout(0.4))
     
-    model.add(tensorflow.keras.layers.Conv1D(filters, kernel_size, padding='valid', activation='relu'))
-    model.add(tensorflow.keras.layers.GlobalMaxPooling1D())
+    #model.add(tensorflow.keras.layers.Conv1D(filters, kernel_size, padding='valid', activation='relu'))
+    #model.add(tensorflow.keras.layers.GlobalMaxPooling1D())
     
-   # model.add(tensorflow.keras.layers.LSTM(hidden_dims, return_sequences=False))  # Set return_sequences=True if stacking LSTMs
+    #model.add(tensorflow.keras.layers.LSTM(hidden_dims, return_sequences=False))  # Set return_sequences=True if stacking LSTMs
+    model.add(tensorflow.keras.layers.Bidirectional(tensorflow.keras.layers.LSTM(hidden_dims, return_sequences=False)))
+    #model.add(tensorflow.keras.layers.CuDNNLSTM(hidden_dims, return_sequences=False))
 
-    model.add(tensorflow.keras.layers.Dense(hidden_dims, kernel_regularizer=tensorflow.keras.regularizers.l2(0.05)))
-    model.add(tensorflow.keras.layers.Dropout(0.5))
+    model.add(tensorflow.keras.layers.Dense(hidden_dims, kernel_regularizer=tensorflow.keras.regularizers.l2(0.08)))
+    model.add(tensorflow.keras.layers.Dropout(0.4))
     model.add(tensorflow.keras.layers.Activation('relu'))
     
     # Output layer for binary classification
