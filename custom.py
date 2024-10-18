@@ -38,7 +38,7 @@ embedding_dims = 42
 filters = 100
 kernel_size = 3
 hidden_dims = 128
-epochs = 10
+epochs = 3
 
 # Add parts-of-speech to data (if desired, but we'll ignore this flag in this version)
 pos_tags_flag = False  # Disabling for now as we load data from a CSV
@@ -204,16 +204,54 @@ if not load_model_flag:
     #model.add(tensorflow.keras.layers.Dense(1,activation="sigmoid"))
     
     #second arch, less complicated
-
+    
     model.add(tensorflow.keras.layers.Embedding(numUniqueWords,embedding_dims,input_length=maxlen))
-    model.add(tensorflow.keras.layers.LSTM(hidden_dims, dropout=0.3, return_sequences=False))
+    #model.add(tensorflow.keras.layers.LSTM(hidden_dims, dropout=0.3, return_sequences=False))
+    #model.add(tensorflow.keras.layers.Bidirectional(tensorflow.keras.layers.LSTM(hidden_dims, dropout=0.3, return_sequences=True)))
+    model.add(tensorflow.keras.layers.Bidirectional(tensorflow.keras.layers.LSTM(hidden_dims, dropout=0.1, return_sequences=False)))
     model.add(tensorflow.keras.layers.Dense(1,activation="sigmoid")) 
+    #model.add(tensorflow.keras.layers.Dense(hidden_dims, activation='relu'))
+    #model.add(tensorflow.keras.layers.Dropout(0.4))
+    #model.add(tensorflow.keras.layers.Dense(1, activation='sigmoid', kernel_regularizer=tensorflow.keras.regularizers.l2(0.01)))
     
     #model.build(input_shape=(None, maxlen))  # None for batch size, maxLength for sequence length
     # Compile the model with binary cross-entropy loss
     
+    model.build(input_shape=(None, maxlen))  # None for batch size, maxLength for sequence length
+    
     optimizer = tensorflow.keras.optimizers.Adam(learning_rate=1e-4)  # Lower learning rate
     model.compile(loss='binary_crossentropy', optimizer=optimizer, metrics=['accuracy'])
+    
+    
+    
+    # arch type 3 from interwebs
+    """
+    model.add(tensorflow.keras.layers.Embedding(numUniqueWords,embedding_dims,input_length=maxlen))
+
+    model.add(tensorflow.keras.layers.LSTM(128,activation='relu',return_sequences=True))
+
+    model.add(tensorflow.keras.layers.Dropout(0.2))
+
+    model.add(tensorflow.keras.layers.LSTM(128,activation='relu',return_sequences=False))
+
+    model.add(tensorflow.keras.layers.Dropout(0.2))
+
+    # for units in [128,128,64,32]:
+
+    # model.add(Dense(units,activation='relu'))
+
+    # model.add(Dropout(0.2))
+
+    model.add(tensorflow.keras.layers.Dense(32,activation='relu'))
+
+    model.add(tensorflow.keras.layers.Dropout(0.2))
+
+    model.add(tensorflow.keras.layers.Dense(4,activation='softmax'))
+    
+    model.build(input_shape=(None, maxlen))  # None for batch size, maxLength for sequence length
+
+    model.compile(loss='sparse_categorical_crossentropy',optimizer='adam',metrics=['accuracy'])
+    """
     
     # Train the model
     model.fit(x_train, y_train, batch_size=batch_size, epochs=epochs, validation_data=(x_test, y_test))
