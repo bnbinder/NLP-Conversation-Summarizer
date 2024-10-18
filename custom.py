@@ -34,7 +34,7 @@ print("Load Model?", (load_model_flag))
 # Model configuration
 maxlen = 300
 batch_size = 128
-embedding_dims = 75
+embedding_dims = 42
 filters = 100
 kernel_size = 3
 hidden_dims = 128
@@ -185,24 +185,29 @@ if not load_model_flag:
     # Build the CNN model
     model = tensorflow.keras.models.Sequential()
 
-    model.add(tensorflow.keras.layers.Embedding(numUniqueWords, embedding_dims, input_length=maxlen))
-    model.add(tensorflow.keras.layers.Dropout(0.4))
+    #model.add(tensorflow.keras.layers.Embedding(numUniqueWords, embedding_dims, input_length=maxlen))
+    #model.add(tensorflow.keras.layers.Dropout(0.4))
     
     #model.add(tensorflow.keras.layers.Conv1D(filters, kernel_size, padding='valid', activation='relu'))
     #model.add(tensorflow.keras.layers.GlobalMaxPooling1D())
     
     #model.add(tensorflow.keras.layers.LSTM(hidden_dims, return_sequences=False))  # Set return_sequences=True if stacking LSTMs
-    model.add(tensorflow.keras.layers.Bidirectional(tensorflow.keras.layers.LSTM(hidden_dims, return_sequences=False)))
+    #model.add(tensorflow.keras.layers.Bidirectional(tensorflow.keras.layers.LSTM(hidden_dims, return_sequences=False)))
     #model.add(tensorflow.keras.layers.CuDNNLSTM(hidden_dims, return_sequences=False))
 
-    model.add(tensorflow.keras.layers.Dense(hidden_dims, kernel_regularizer=tensorflow.keras.regularizers.l2(0.08)))
-    model.add(tensorflow.keras.layers.Dropout(0.4))
-    model.add(tensorflow.keras.layers.Activation('relu'))
+    #model.add(tensorflow.keras.layers.Dense(hidden_dims, kernel_regularizer=tensorflow.keras.regularizers.l2(0.08)))
+    #model.add(tensorflow.keras.layers.Dropout(0.4))
+    #model.add(tensorflow.keras.layers.Activation('relu'))
     
     # Output layer for binary classification
     #  1 output for binary (question or non-question)
-    model.add(tensorflow.keras.layers.Dense(1,activation="sigmoid"))
+    #model.add(tensorflow.keras.layers.Dense(1,activation="sigmoid"))
+    
+    #second arch, less complicated
 
+    model.add(tensorflow.keras.layers.Embedding(numUniqueWords,embedding_dims,input_length=maxlen))
+    model.add(tensorflow.keras.layers.LSTM(hidden_dims, dropout=0.3, return_sequences=False))
+    model.add(tensorflow.keras.layers.Dense(1,activation="sigmoid")) 
     
     #model.build(input_shape=(None, maxlen))  # None for batch size, maxLength for sequence length
     # Compile the model with binary cross-entropy loss
