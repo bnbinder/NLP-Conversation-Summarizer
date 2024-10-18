@@ -77,3 +77,4 @@ https://medium.com/@manuelescobar-dev/implementing-and-running-llama-3-with-hugg
 
 https://stackoverflow.com/questions/61931629/overfitting-in-lstm-even-after-using-regularizers
 https://www.tensorflow.org/text/tutorials/text_classification_rnn
+https://www.kaggle.com/code/nayansakhiya/text-classification-using-bert

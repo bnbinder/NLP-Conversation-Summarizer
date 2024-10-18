@@ -32,13 +32,13 @@ print(model_name)
 print("Load Model?", (load_model_flag))
 
 # Model configuration
-maxlen = 300
+maxlen = 150
 batch_size = 128
 embedding_dims = 42
 filters = 100
 kernel_size = 3
 hidden_dims = 128
-epochs = 3
+epochs = 5
 
 # Add parts-of-speech to data (if desired, but we'll ignore this flag in this version)
 pos_tags_flag = False  # Disabling for now as we load data from a CSV
@@ -207,8 +207,9 @@ if not load_model_flag:
     """
     model.add(tensorflow.keras.layers.Embedding(numUniqueWords,embedding_dims,input_length=maxlen))
     #model.add(tensorflow.keras.layers.LSTM(hidden_dims, dropout=0.3, return_sequences=False))
+    model.add(tensorflow.keras.layers.LSTM(hidden_dims, return_sequences=False))
     #model.add(tensorflow.keras.layers.Bidirectional(tensorflow.keras.layers.LSTM(hidden_dims, dropout=0.3, return_sequences=True)))
-    model.add(tensorflow.keras.layers.Bidirectional(tensorflow.keras.layers.LSTM(hidden_dims, dropout=0.1, return_sequences=False)))
+    #model.add(tensorflow.keras.layers.Bidirectional(tensorflow.keras.layers.LSTM(hidden_dims, dropout=0.1, return_sequences=False)))
     model.add(tensorflow.keras.layers.Dense(1,activation="sigmoid")) 
     #model.add(tensorflow.keras.layers.Dense(hidden_dims, activation='relu'))
     #model.add(tensorflow.keras.layers.Dropout(0.4))
@@ -217,9 +218,9 @@ if not load_model_flag:
     #model.build(input_shape=(None, maxlen))  # None for batch size, maxLength for sequence length
     # Compile the model with binary cross-entropy loss
     
-    model.build(input_shape=(None, maxlen))  # None for batch size, maxLength for sequence length
+    #model.build(input_shape=(None, maxlen))  # None for batch size, maxLength for sequence length
     
-    optimizer = tensorflow.keras.optimizers.Adam(learning_rate=1e-4)  # Lower learning rate
+    optimizer = tensorflow.keras.optimizers.Adam(learning_rate=0.01)  # Lower learning rate
     model.compile(loss='binary_crossentropy', optimizer=optimizer, metrics=['accuracy'])
     
     """
@@ -282,34 +283,35 @@ if not load_model_flag:
     #model.build(input_shape=(None, maxlen))  # None for batch size, maxLength for sequence length
     model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
     """
+    """
+    model = tensorflow.keras.Sequential([
+    tensorflow.keras.layers.Embedding(
+        input_dim= numUniqueWords,
+        output_dim=64,
+        # Use masking to handle the variable sequence lengths
+        mask_zero=True),
+    tensorflow.keras.layers.Bidirectional(tensorflow.keras.layers.LSTM(64)),
+    tensorflow.keras.layers.Dense(64, activation='relu'),
+    tensorflow.keras.layers.Dense(1)
+    ])
+    
+    model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
+    """
     
     
-    # A basic self-attention layer
-    class SelfAttention(tensorflow.keras.layers.Layer):
-        def __init__(self, units):
-            super(SelfAttention, self).__init__()
-            self.wq = tensorflow.keras.layers.Dense(units)
-            self.wk = tensorflow.keras.layers.Dense(units)
-            self.wv = tensorflow.keras.layers.Dense(units)
-
-        def call(self, inputs):
-            query = self.wq(inputs)
-            key = self.wk(inputs)
-            value = self.wv(inputs)
-
-            attention_scores = tensorflow.matmul(query, key, transpose_b=True)
-            attention_weights = tensorflow.nn.softmax(attention_scores, axis=-1)
-
-            return tensorflow.matmul(attention_weights, value)
-
-    # Usage in a model
-    model = tensorflow.keras.models.Sequential()
-    model.add(tensorflow.keras.layers.Embedding(numUniqueWords, embedding_dims, input_length=maxlen))
-    model.add(SelfAttention(128))
+    # arch type 6, maybe?
+    
+    model.add(tensorflow.keras.layers.Embedding(numUniqueWords,
+                    embedding_dims,
+                    input_length = maxlen))
+    model.add(tensorflow.keras.layers.GlobalAveragePooling1D())
+    model.add(tensorflow.keras.layers.Dense(24, activation='relu'))
+    model.add(tensorflow.keras.layers.Dropout(0.2))
     model.add(tensorflow.keras.layers.Dense(1, activation='sigmoid'))
+    
+    model.build()
     model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
 
-    
     # Train the model
     model.fit(x_train, y_train, batch_size=batch_size, epochs=epochs, validation_data=(x_test, y_test))
 
