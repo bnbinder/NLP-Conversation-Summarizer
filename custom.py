@@ -225,7 +225,7 @@ if not load_model_flag:
     """
     
     # arch type 3 from interwebs
-    
+    """
     #encoder = tensorflow.keras.layers.TextVectorization(
     #max_tokens=numUniqueWords)
     #encoder.adapt(x_train.map(lambda text, label: text))
@@ -257,16 +257,58 @@ if not load_model_flag:
     model.build(input_shape=(None, maxlen))  # None for batch size, maxLength for sequence length
 
     model.compile(loss='binary_crossentropy',optimizer='adam',metrics=['accuracy'])
-    
+    """
     
     #arch 4 i hate this
     """
-    model.add(tensorflow.keras.layers.Embedding(hidden_dims))
-    model.add(tensorflow.keras.layers.Dropout(0.2))
-    model.add(tensorflow.keras.layers.GlobalAveragePooling1D())
-    model.add(tensorflow.keras.layers.Dropout(0.2))
+    model.add(tensorflow.keras.layers.Embedding(numUniqueWords, embedding_dims))
+    model.add(tensorflow.keras.layers.Dropout(0.5))
+    #model.add(tensorflow.keras.layers.Conv1D(filters, kernel_size, padding='valid', activation='relu'))
+    #model.add(tensorflow.keras.layers.GlobalAveragePooling1D())
+    model.add(tensorflow.keras.layers.LSTM(hidden_dims,return_sequences=False))
+    model.add(tensorflow.keras.layers.Dropout(0.5))
     model.add(tensorflow.keras.layers.Dense(1, activation='sigmoid'))
+    model.build(input_shape=(None, maxlen))  # None for batch size, maxLength for sequence length
+
+    model.compile(loss='binary_crossentropy',optimizer='adam',metrics=['accuracy'])
     """
+    
+    # arch 5, nope
+    """
+    model = tensorflow.keras.models.Sequential()
+    model.add(tensorflow.keras.layers.Embedding(numUniqueWords, embedding_dims, input_length=maxlen))
+    model.add(tensorflow.keras.layers.GRU(hidden_dims, dropout=0.3, recurrent_dropout=0.3, return_sequences=False))
+    model.add(tensorflow.keras.layers.Dense(1, activation='sigmoid'))
+    #model.build(input_shape=(None, maxlen))  # None for batch size, maxLength for sequence length
+    model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
+    """
+    
+    
+    # A basic self-attention layer
+    class SelfAttention(tensorflow.keras.layers.Layer):
+        def __init__(self, units):
+            super(SelfAttention, self).__init__()
+            self.wq = tensorflow.keras.layers.Dense(units)
+            self.wk = tensorflow.keras.layers.Dense(units)
+            self.wv = tensorflow.keras.layers.Dense(units)
+
+        def call(self, inputs):
+            query = self.wq(inputs)
+            key = self.wk(inputs)
+            value = self.wv(inputs)
+
+            attention_scores = tensorflow.matmul(query, key, transpose_b=True)
+            attention_weights = tensorflow.nn.softmax(attention_scores, axis=-1)
+
+            return tensorflow.matmul(attention_weights, value)
+
+    # Usage in a model
+    model = tensorflow.keras.models.Sequential()
+    model.add(tensorflow.keras.layers.Embedding(numUniqueWords, embedding_dims, input_length=maxlen))
+    model.add(SelfAttention(128))
+    model.add(tensorflow.keras.layers.Dense(1, activation='sigmoid'))
+    model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
+
     
     # Train the model
     model.fit(x_train, y_train, batch_size=batch_size, epochs=epochs, validation_data=(x_test, y_test))
@@ -303,8 +345,9 @@ print('Test accuracy:', score[1])
 # Example: Test with custom sentences
 def get_custom_test_comments():
     # Add some sample sentences
-    test_sentences = ["Is this a question", "This is a statement", "Can you help me", "Close the door"]
-    test_labels = [1, 0, 1, 0]  # 1 for questions, 0 for non-questions
+    test_sentences = ["Is this a question", "This is a statement", "Can you help me", "Close the door",
+                      "Hello there general kenobi", "were you the chosen one", "do you know me"]
+    test_labels = [1, 0, 1, 0, 0, 1, 1]  # 1 for questions, 0 for non-questions
     
     return test_sentences, test_labels
 
