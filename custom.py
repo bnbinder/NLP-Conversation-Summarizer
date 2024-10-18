@@ -204,7 +204,7 @@ if not load_model_flag:
     #model.add(tensorflow.keras.layers.Dense(1,activation="sigmoid"))
     
     #second arch, less complicated
-    
+    """
     model.add(tensorflow.keras.layers.Embedding(numUniqueWords,embedding_dims,input_length=maxlen))
     #model.add(tensorflow.keras.layers.LSTM(hidden_dims, dropout=0.3, return_sequences=False))
     #model.add(tensorflow.keras.layers.Bidirectional(tensorflow.keras.layers.LSTM(hidden_dims, dropout=0.3, return_sequences=True)))
@@ -222,19 +222,25 @@ if not load_model_flag:
     optimizer = tensorflow.keras.optimizers.Adam(learning_rate=1e-4)  # Lower learning rate
     model.compile(loss='binary_crossentropy', optimizer=optimizer, metrics=['accuracy'])
     
-    
+    """
     
     # arch type 3 from interwebs
-    """
+    
+    #encoder = tensorflow.keras.layers.TextVectorization(
+    #max_tokens=numUniqueWords)
+    #encoder.adapt(x_train.map(lambda text, label: text))
+    
+    #model.add(encoder)
+    
     model.add(tensorflow.keras.layers.Embedding(numUniqueWords,embedding_dims,input_length=maxlen))
 
-    model.add(tensorflow.keras.layers.LSTM(128,activation='relu',return_sequences=True))
+    #model.add(tensorflow.keras.layers.LSTM(hidden_dims,activation='relu',return_sequences=True))
 
-    model.add(tensorflow.keras.layers.Dropout(0.2))
+    #model.add(tensorflow.keras.layers.Dropout(0.2))
 
-    model.add(tensorflow.keras.layers.LSTM(128,activation='relu',return_sequences=False))
+    model.add(tensorflow.keras.layers.LSTM(hidden_dims,return_sequences=False))
 
-    model.add(tensorflow.keras.layers.Dropout(0.2))
+    #model.add(tensorflow.keras.layers.Dropout(0.2))
 
     # for units in [128,128,64,32]:
 
@@ -242,15 +248,24 @@ if not load_model_flag:
 
     # model.add(Dropout(0.2))
 
-    model.add(tensorflow.keras.layers.Dense(32,activation='relu'))
+    model.add(tensorflow.keras.layers.Dense(hidden_dims,activation='relu'))
 
-    model.add(tensorflow.keras.layers.Dropout(0.2))
+    #model.add(tensorflow.keras.layers.Dropout(0.2))
 
-    model.add(tensorflow.keras.layers.Dense(4,activation='softmax'))
+    model.add(tensorflow.keras.layers.Dense(1,activation='sigmoid'))
     
     model.build(input_shape=(None, maxlen))  # None for batch size, maxLength for sequence length
 
-    model.compile(loss='sparse_categorical_crossentropy',optimizer='adam',metrics=['accuracy'])
+    model.compile(loss='binary_crossentropy',optimizer='adam',metrics=['accuracy'])
+    
+    
+    #arch 4 i hate this
+    """
+    model.add(tensorflow.keras.layers.Embedding(hidden_dims))
+    model.add(tensorflow.keras.layers.Dropout(0.2))
+    model.add(tensorflow.keras.layers.GlobalAveragePooling1D())
+    model.add(tensorflow.keras.layers.Dropout(0.2))
+    model.add(tensorflow.keras.layers.Dense(1, activation='sigmoid'))
     """
     
     # Train the model
