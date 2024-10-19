@@ -6,12 +6,41 @@ from transformers import BertTokenizer, BertModel, AdamW, get_linear_schedule_wi
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, classification_report
 import pandas as pd
+import string
 
 def load_imdb_data(data_file):
-    df = pd.read_csv(data_file)
-    texts = df['text'].tolist()
-    labels = df['isquestion'].tolist()
+    
+    data = pd.read_csv(data_file)
+     
+    def removePunc(text):
+        trans = str.maketrans("", "", string.punctuation)
+        return text.translate(trans)
+
+    def removeQuotes(text):
+        return text.replace('"', '').replace("'", "")
+
+    data["text"] = data.text.map(removePunc)
+    data["text"] = data.text.map(removeQuotes) 
+
+    data = data.sample(frac=1).reset_index(drop=True)
+    
+    texts = data['text'].tolist()
+    labels = data['isquestion'].tolist()
     return texts, labels
+
+def load_model_and_tokenizer(model_path='bert_classifier.pth', bert_model_name='bert-base-uncased', num_classes=2):
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    
+    # Initialize model
+    model = BERTClassifier(bert_model_name, num_classes).to(device)
+    
+    # Load the saved model state
+    model.load_state_dict(torch.load(model_path))
+    
+    # Initialize tokenizer
+    tokenizer = BertTokenizer.from_pretrained(bert_model_name)
+    
+    return model, tokenizer, device
 
 data_file = "data.csv"
 texts, labels = load_imdb_data(data_file)
@@ -86,10 +115,10 @@ def predict_sentiment(text, model, tokenizer, device, max_length=128):
     with torch.no_grad():
         outputs = model(input_ids=input_ids, attention_mask=attention_mask)
         logits = outputs.cpu().numpy()
-        print("Raw output values (logits):", logits)
-        print("Logits flattened:", logits.flatten())
+        #print("Raw output values (logits):", logits)
+        #print("Logits flattened:", logits.flatten())
         _, preds = torch.max(outputs, dim=1)
-        return "positive" if preds.item() == 1 else "negative"
+        return "ITS A QUESTION" if preds.item() == 1 else "NOPE"
 
 # Set up parameters
 bert_model_name = 'bert-base-uncased'
@@ -135,4 +164,12 @@ test_texts = [
 
 for test_text in test_texts:
     sentiment = predict_sentiment(test_text, model, tokenizer, device)
-    print(f"{test_text}\nPredicted sentiment: {sentiment}\n")
+    print(f"\n{test_text}\nPredicted sentiment: {sentiment}\n")
+    
+while True:
+    user_input  = input("input that stuff:    ")
+    if user_input == "exit":
+        break
+    else:
+        sentiment = predict_sentiment(user_input , model, tokenizer, device)
+        print(f"\n{user_input }\nPredicted sentiment: {sentiment}\n")

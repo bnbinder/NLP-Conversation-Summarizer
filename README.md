@@ -72,9 +72,4 @@ Set-ExecutionPolicy -ExecutionPolicy Undefined
 ```
 
 # Sources and Help
-https://medium.com/@manuelescobar-dev/implementing-and-running-llama-3-with-hugging-faces-transformers-library-40e9754d8c80
-
-
-https://stackoverflow.com/questions/61931629/overfitting-in-lstm-even-after-using-regularizers
-https://www.tensorflow.org/text/tutorials/text_classification_rnn
-https://www.kaggle.com/code/nayansakhiya/text-classification-using-bert
+https://medium.com/@khang.pham.exxact/text-classification-with-bert-7afaacc5e49b
