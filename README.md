@@ -1,14 +1,20 @@
-ideas
+we have a text classifier, one and zero
 
-- flask? if i want this to be used for any text file
-- spacy and other python libraries for summarizing text
-- summarize claims made by each candidate, summarize promises, summarize tone and their response to each question
-- eliminate bias
+only split sentences of moderators, which we need to define manually
+keep text same for candidates
 
+question - we have a good way, but best way?
+topic - risky, but fallback if question isnt good, but how to implement i dont know
 
+if moderator text is question or new topic
+    summarize candidates responses -- all text until next question or topic
+    break if encounter new question or topic from moderator
+    
+new dictionary with one word description, with multi word description when found next question
 
-
-
+economy - specific thing - gjireob jwen
+        - speiciic thing - ngui howjubn 
+        - specific thing - gnbuoejwr
 
 
 # ALMOST DONE - NEED TO FINE TUNE SOME THINGS

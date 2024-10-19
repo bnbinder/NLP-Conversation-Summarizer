@@ -1,21 +1,3 @@
-"""
-
-we have a text classifier, one and zero
-
-only split sentences of moderators, which we need to define manually
-keep text same for candidates
-
-if moderator text is question
-    summarize candidates responses
-    break if encounter new question from moderator
-    
-new dictionary with one word description, with multi word description when found next question
-
-economy - specific thing - gjireob jwen
-        - speiciic thing - ngui howjubn 
-        - specific thing - gnbuoejwr
-
-"""
 import nltk
 nltk.download('punkt_tab')
 from nltk.tokenize import sent_tokenize
@@ -29,6 +11,7 @@ endings = {'.', '?', '!'}
 titles = {'Mr.', 'Mrs.', 'Dr.', 'Ms.', 'Prof.'}
 values = []
 key = []
+fileLen = 0
 
 def removePunc(text):
     trans = str.maketrans("", "", string.punctuation)
@@ -48,15 +31,15 @@ def parseTextIntoSent(text):
 
 with open("ABCdebateTranscript.txt", "r", encoding="utf-8") as file:
     for line in file:
+        fileLen += 1
         if line.strip():
             text = line.strip()
             key.append(text[:text.find(":")])
             values.append(text[text.find(":")+2:]) 
 
-
-for i in range(0, 50):
+for i in range(0, ):
     print("-----------" + key[i] + "-----------")
-    
+
     if key[i] in moderator:
         array = parseTextIntoSent(values[i])
         for f in array:
