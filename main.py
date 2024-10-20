@@ -2,7 +2,8 @@ from nltk.tokenize import sent_tokenize
 from modelUtils import loadModelAndTokenizer, predictSentiment  # Import the function from the module
 import string
 
-model, tokenizer, device = loadModelAndTokenizer()
+modelBert, tokenizerBert, deviceBert = loadModelAndTokenizer()
+
 """
 while True:
     user_input  = input("input that stuff:    ")
@@ -12,6 +13,7 @@ while True:
         sentiment = predictSentiment(user_input , model, tokenizer, device)
         print(f"\n{user_input }\nPredicted sentiment: {sentiment}\n")
 """
+
 moderator = ["DAVID MUIR", "LINSEY DAVIS"]
 candidates = ["VICE PRESIDENT KAMALA HARRIS", "FORMER PRESIDENT DONALD TRUMP"]
 endings = {'.', '?', '!'}
@@ -58,7 +60,7 @@ for i in range(0, fileLen):
         print("-----------" + key[i] + "-----------")
         array = parseTextIntoSent(values[i])
         for f in array:
-            sentiment = predictSentiment(f, model, tokenizer, device)
+            sentiment = predictSentiment(f, modelBert, tokenizerBert, deviceBert)
             print(f"\n{f}\nPredicted sentiment: {sentiment}\n")
             if sentiment == sentimentTrue and values[i] not in sentimentTrueCollect:
                 tempKey = key[i]
@@ -82,7 +84,10 @@ for i in range(0, fileLen):
     """
 
 for f in collection:
-    print("le thing")
     print(f"\n{f}")
-    print(collection[f][candidates[0]])
-    print(collection[f][candidates[1]])
+    for i in collection[f][candidates[0]]:
+        print(f"\n{candidates[0]}")
+        print(i)
+    for i in collection[f][candidates[1]]:
+        print(f"\n{candidates[1]}")
+        print(i)

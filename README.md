@@ -60,6 +60,9 @@ https://developer.nvidia.com/cuda-toolkit <-- idk lol
 
 and install these libraries
 ```
+pip install sentence-transformers scikit-learn
+pip install bert-extractive-summarizer
+pip install sumy
 
 pip install sentencepiece
 
