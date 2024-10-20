@@ -9,6 +9,18 @@ topic - risky, but fallback if question isnt good, but how to implement i dont k
 if moderator text is question or new topic
     summarize candidates responses -- all text until next question or topic
     break if encounter new question or topic from moderator
+
+    do it by having collection
+    [
+        quesiton1: {
+                    name1: [text, text]
+                    name2: [text, text]
+                   }
+        question2: {
+                    name1: [text, text]
+                    name2: [text, text]
+                   }
+    ]
     
 new dictionary with one word description, with multi word description when found next question
 

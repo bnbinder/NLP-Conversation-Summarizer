@@ -17,7 +17,7 @@ class BERTClassifier(nn.Module):
         logits = self.fc(x)
         return logits
 
-def load_model_and_tokenizer(model_path='bert_classifier.pth', bert_model_name='bert-base-uncased', num_classes=2):
+def loadModelAndTokenizer(model_path='bert_classifier.pth', bert_model_name='bert-base-uncased', num_classes=2):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     
     # Initialize model
@@ -31,19 +31,19 @@ def load_model_and_tokenizer(model_path='bert_classifier.pth', bert_model_name='
     
     return model, tokenizer, device
 
-def predict_sentiment(text, model, tokenizer, device, max_length=128):
+def predictSentiment(text, model, tokenizer, device, maxLength=128):
     model.eval()
-    encoding = tokenizer(text, return_tensors='pt', max_length=max_length, padding='max_length', truncation=True)
-    input_ids = encoding['input_ids'].to(device)
-    attention_mask = encoding['attention_mask'].to(device)
+    encoding = tokenizer(text, return_tensors='pt', max_length=maxLength, padding='max_length', truncation=True)
+    inputIds = encoding['input_ids'].to(device)
+    attentionMask = encoding['attention_mask'].to(device)
     with torch.no_grad():
-        outputs = model(input_ids=input_ids, attention_mask=attention_mask)
+        outputs = model(input_ids=inputIds, attention_mask=attentionMask)
         _, preds = torch.max(outputs, dim=1)
         logits = outputs.cpu().numpy()
-        #print("Logits flattened:", logits.flatten())
-        realone = True if logits.flatten()[0] > 1.5 else False
-        #print("is it a question based on logit 1:", realone)
-        realtwo = True if logits.flatten()[1] > 1.5 else False
+        print("Logits flattened:", logits.flatten())
+        realone = True if logits.flatten()[0] > 1.75 else False
+        print("is it a question based on logit 1:", realone)
+        realtwo = True if logits.flatten()[1] > 1.75 else False
         #print("is it a question based on logit 2:", realtwo)
         #return "ITS A QUESTION" if preds.item() == 1 else "NOPE"
-        return "ITS A QUESTION" if logits.flatten()[1] > 1.5 else "NOPE"
+        return "ITS A QUESTION" if logits.flatten()[1] > 1.75 else "NOPE"
