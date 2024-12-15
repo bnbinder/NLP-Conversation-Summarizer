@@ -60,23 +60,10 @@ https://developer.nvidia.com/cuda-toolkit <-- idk lol
 
 and install these libraries
 ```
-pip install sentence-transformers scikit-learn
-pip install bert-extractive-summarizer
-pip install sumy
-
-pip install sentencepiece
-
-pip install POT
-pip install rouge_score
-pip install gensim
 pip install nltk
-pip install textstat
 pip install sentence-transformers
 pip install sentencepiece
 pip install spacy
-python -m spacy download en_core_web_sm
-pip install bitsandbytes
-pip install -U "huggingface_hub[cli]"
 pip install accelerate
 pip install transformers
 pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121

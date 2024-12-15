@@ -1,0 +1,13 @@
+from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
+
+tokenizer = AutoTokenizer.from_pretrained("facebook/bart-large-cnn")
+model = AutoModelForSeq2SeqLM.from_pretrained("facebook/bart-large-cnn")
+
+article = "So I'm the only person on this stage who has prosecuted transnational criminal organizations for the trafficking of guns, drugs, and human beings. And let me say that the United States Congress, including some of the most conservative members of the United States Senate, came up with a border security bill which I supported. And that bill would have put 1,500 more border agents on the border to help those folks who are working there right now over time trying to do their job. It would have allowed us to stem the flow of fentanyl coming into the United States. I know there are so many families watching tonight who have been personally affected by the surge of fentanyl in our country. That bill would have put more resources to allow us to prosecute transnational criminal organizations for trafficking in guns, drugs and human beings. But you know what happened to that bill? Donald Trump got on the phone, called up some folks in Congress, and said kill the bill. And you know why? Because he preferred to run on a problem instead of fixing a problem. And understand, this comes at a time where the people of our country actually need a leader who engages in solutions, who actually addresses the problems at hand. But what we have in the former president is someone who would prefer to run on a problem instead of fixing a problem. And I'll tell you something, he's going to talk about immigration a lot tonight even when it's not the subject that is being raised. And I'm going to actually do something really unusual and I'm going to invite you to attend one of Donald Trump's rallies because it's a really interesting thing to watch. You will see during the course of his rallies he talks about fictional characters like Hannibal Lecter. He will talk about windmills cause cancer. And what you will also notice is that people start leaving his rallies early out of exhaustion and boredom. And I will tell you the one thing you will not hear him talk about is you. You will not hear him talk about your needs, your dreams, and your, your desires. And I'll tell you, I believe you deserve a president who actually puts you first. And I pledge to you that I will."
+
+print("article : " + article + "\n")
+
+inputs = tokenizer([article], max_length=1024, return_tensors='pt')
+summary_ids = model.generate(inputs['input_ids'], num_beams=4, max_length=200, early_stopping=True)
+
+print([tokenizer.decode(g, skip_special_tokens=True, clean_up_tokenization_spaces=False) for g in summary_ids])
