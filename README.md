@@ -1,3 +1,21 @@
+we have : 
+
+llama - can basically summarize evrything, but takes forever
+bert - can do summarize, but need to manually parse through text to cerate tailored summaries
+ranking - worst, but at least we know keeps all information. 
+
+can just use all and have people select which to use, or use all
+
+features
+- bring up tweets and quotes to fact check summaries made and things claimed
+- other things to bring to validate summaries?
+<br>
+<br>
+<br>
+old notes????:
+<br>
+<br>
+<br>
 we have a text classifier, one and zero
 
 only split sentences of moderators, which we need to define manually
@@ -68,6 +86,7 @@ pip install accelerate
 pip install transformers
 pip install bitsandbytes
 pip install numpy==1.26.4
+pip install pandas
 pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
 ```
 
