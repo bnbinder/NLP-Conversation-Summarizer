@@ -66,6 +66,8 @@ pip install sentencepiece
 pip install spacy
 pip install accelerate
 pip install transformers
+pip install bitsandbytes
+pip install numpy==1.26.4
 pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
 ```
 
