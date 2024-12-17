@@ -94,21 +94,19 @@ for f in collection:
 
 # first iteration
 
-"""
-  
+""" 
 Summarize all claims the speaker makes about anything. Categorize them with bullet points in categories. 
 The response generated should only be this: the categories (EX: **Economy and Taxes**) and the bullet points
 about everything they say that fits in those categories (EX: Give tax breaks to billionaires and big 
 corporations, increasing the deficit by $5 trillion, Implement a 20%% sales tax on everyday goods, which 
 would disproportionately affect middle-class families, etc). Everything said should be put in its own 
-category. Do not start the response with "Here are the categorized claims:", only categories and bullet points
-should be in the respons. Also, if you have a category that talks about the speakers claims and things the speaker
-is saying about someone else, split the category into two categories, adding (self) with what the speaker is saying
-about themselves and (opponent) with what the speaker is saying about the opponent. Keep all specific and relevant information
-in the bullet points, dont leave anything out:
-
+category. If you have a category that talks about the speakers claims and things the speaker
+is saying about someone else, split the category into two categories, adding (self) with what the speaker is 
+saying about themselves and (opponent) with what the speaker is saying about the opponent.  Do not start the 
+response with \"Here are the categorized claims:\", only categories and bullet points
+should be in the response. Keep all specific and relevant information in the bullet points, dont leave anything out:
 """
-# summary = bot.getResponse("Summarize all claims the speaker makes about anything. Categorize them with bullet points in categories. The response generated should only be this: the categories (EX: **Economy and Taxes**) and the bullet points about everything they say that fits in those categories (EX: Give tax breaks to billionaires and big corporations, increasing the deficit by $5 trillion, Implement a 20%% sales tax on everyday goods, which would disproportionately affect middle-class families, etc). Everything said should be put in its own category. Do not start the response with \"Here are the categorized claims:\", only categories and bullet points should be in the response. Also, if you have a category that talks about the speakers claims and things the speaker is saying about someone else, split the category into two categories, adding (self) with what the speaker is saying about themselves and (opponent) with what the speaker is saying about the opponent (EX: **Economy (self)** and **Economy (opponent)**). Keep all specific and relevant information in the bullet points, dont leave anything out: " + temp)
+# summary = bot.getResponse("Summarize all claims the speaker makes about anything. Categorize them with bullet points in categories. The response generated should only be this: the categories (EX: **Economy and Taxes**) and the bullet points about everything they say that fits in those categories (EX: Give tax breaks to billionaires and big corporations, increasing the deficit by $5 trillion, Implement a 20%% sales tax on everyday goods, which would disproportionately affect middle-class families, etc). Everything said should be put in its own category. If you have a category that talks about the speakers claims and things the speaker is saying about someone else, split the category into two categories, adding (self) with what the speaker is saying about themselves and (opponent) with what the speaker is saying about the opponent.  Do not start the response with "Here are the categorized claims:", only categories and bullet points should be in the response. Keep all specific and relevant information in the bullet points, dont leave anything out: " + temp)
 
 
 # second iteration
@@ -120,6 +118,7 @@ bullet points. Omit any categories not mentioned. Keep all claims specific and d
 additional commentary or introductions. Do not start the response with "Here are the categorized claims:", only categories and bullet points
 should be in the response: 
 """
+# summary = bot.getResponse("Categorize the speaker's claims into topics using bullet points, grouping all relevant details under each category without leaving anything out. Split categories into “(self)” for claims about the speaker and “(opponent)” for claims about their opponent when applicable. Example: *Economy (self)* for category, and *sentence *sentence for bullet points. Omit any categories not mentioned. Keep all claims specific and detailed, and present them without additional commentary or introductions. Do not start the response with \"Here are the categorized claims:\", only categories and bullet points should be in the response:  " + temp)
 
 for f in collection:
     temp = ""
@@ -131,7 +130,7 @@ for f in collection:
         for l in sentences:
             temp += l + " "
             count += 1
-    summary = bot.getResponse("Categorize the speaker's claims into topics using bullet points, grouping all relevant details under each category without leaving anything out. Split categories into “(self)” for claims about the speaker and “(opponent)” for claims about their opponent when applicable. Example: *Economy (self)* for category, and *sentence *sentence for bullet points. Omit any categories not mentioned. Keep all claims specific and detailed, and present them without additional commentary or introductions. Do not start the response with \"Here are the categorized claims:\", only categories and bullet points should be in the response:  " + temp)
+    summary = bot.getResponse("Summarize all claims the speaker makes about anything. Categorize them with bullet points in categories. The response generated should only be this: the categories (EX: **Economy and Taxes**) and the bullet points about everything they say that fits in those categories (EX: Give tax breaks to billionaires and big corporations, increasing the deficit by $5 trillion, Implement a 20%% sales tax on everyday goods, which would disproportionately affect middle-class families, etc). Everything said should be put in its own category. If you have a category that talks about the speakers claims and things the speaker is saying about someone else, split the category into two categories, adding (self) with what the speaker is saying about themselves and (opponent) with what the speaker is saying about the opponent.  Do not start the response with \"Here are the categorized claims:\", only categories and bullet points should be in the response. Keep all specific and relevant information in the bullet points, dont leave anything out: " + temp)    
     files.write("orig : " + temp + "\n")
     files.write(candidates[0] + "\n")
     files.write(summary + "\n")
@@ -144,7 +143,7 @@ for f in collection:
         sentences = sent_tokenize(i) 
         for l in sentences:
             temp += l + " "
-    summary = bot.getResponse("Categorize the speaker's claims into topics using bullet points, grouping all relevant details under each category without leaving anything out. Split categories into “(self)” for claims about the speaker and “(opponent)” for claims about their opponent when applicable. Example: *Economy (self)* for category, and *sentence *sentence for bullet points. Omit any categories not mentioned. Keep all claims specific and detailed, and present them without additional commentary or introductions. Do not start the response with \"Here are the categorized claims:\", only categories and bullet points should be in the response:  " + temp)
+    summary = bot.getResponse("Summarize all claims the speaker makes about anything. Categorize them with bullet points in categories. The response generated should only be this: the categories (EX: **Economy and Taxes**) and the bullet points about everything they say that fits in those categories (EX: Give tax breaks to billionaires and big corporations, increasing the deficit by $5 trillion, Implement a 20%% sales tax on everyday goods, which would disproportionately affect middle-class families, etc). Everything said should be put in its own category. If you have a category that talks about the speakers claims and things the speaker is saying about someone else, split the category into two categories, adding (self) with what the speaker is saying about themselves and (opponent) with what the speaker is saying about the opponent.  Do not start the response with \"Here are the categorized claims:\", only categories and bullet points should be in the response. Keep all specific and relevant information in the bullet points, dont leave anything out: " + temp)    
     files.write("orig : " + temp + "\n")
     files.write(candidates[1] + "\n")
     files.write(summary + "\n")

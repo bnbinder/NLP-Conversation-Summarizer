@@ -102,3 +102,4 @@ Set-ExecutionPolicy -ExecutionPolicy Undefined
 
 # Sources and Help
 https://medium.com/@khang.pham.exxact/text-classification-with-bert-7afaacc5e49b
+https://medium.com/ai-enthusiast/building-a-multi-label-text-classifier-with-bert-a-step-by-step-guide-with-code-2bbeba8bd85a
