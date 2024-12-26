@@ -1,11 +1,13 @@
 we have : 
-
+<br>
 llama - can basically summarize evrything, but takes forever
+<br>
 bert - can do summarize, but need to manually parse through text to cerate tailored summaries
+<br>
 ranking - worst, but at least we know keeps all information. 
-
+<br>
 can just use all and have people select which to use, or use all
-
+<br>
 features
 - bring up tweets and quotes to fact check summaries made and things claimed
 - other things to bring to validate summaries?
