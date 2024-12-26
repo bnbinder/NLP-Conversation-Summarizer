@@ -2,7 +2,7 @@ we have :
 <br>
 llama - can basically summarize evrything, but takes forever
 <br>
-bert - can do summarize, but need to manually parse through text to cerate tailored summaries
+bert - can do summarize, but need to manually parse through text to curate tailored summaries
 <br>
 ranking - worst, but at least we know keeps all information. 
 <br>
